@@ -1,0 +1,38 @@
+CREATE TABLE pets (id INTEGER PRIMARY KEY, item TEXT, department TEXT, price INTEGER, quantity INTEGER, popularity INTEGER);
+
+INSERT INTO pets VALUES (1, "Large Dog Leash", "Dogs", 15.99, 10, 80);
+INSERT INTO pets VALUES (2, "Medium Dog Leash", "Dogs", 10.99, 10, 75);
+INSERT INTO pets VALUES (3, "Small Dog Leash", "Dogs", 5.99, 12, 90);
+INSERT INTO pets VALUES (4, "Chew Toy", "Dogs", 8.99, 50, 99);
+INSERT INTO pets VALUES (5, "Dry Food", "Dogs", 22.99, 45, 57);
+INSERT INTO pets VALUES (6, "Wet Food", "Dogs", 15.99, 30, 23);
+INSERT INTO pets VALUES (7, "Biscuits", "Dogs", 4.99, 15, 80);
+INSERT INTO pets VALUES (8, "Large Cat Tree", "Cats", 45.99, 9, 50);
+INSERT INTO pets VALUES (9, "Bed", "Misc", 19.99, 20, 45);
+INSERT INTO pets VALUES (10, "Comb", "Misc", 6.99, 5, 33);
+INSERT INTO pets VALUES (11, "Nail Clippers", "Misc", 3.99, 18, 40);
+INSERT INTO pets VALUES (12, "Dry Food", "Cats", 19.99, 40, 69);
+INSERT INTO pets VALUES (13, "Wet Food", "Cats", 12.99, 45, 75);
+INSERT INTO pets VALUES (14, "Bird Toys", "Small Animals", 5.99, 7, 20);
+INSERT INTO pets VALUES (15, "Tank", "Small Animals", 75.99, 10, 60);
+INSERT INTO pets VALUES (16, "Cedar Bedding", "Small Animals", 10.99, 37, 45);
+INSERT INTO pets VALUES (17, "Water Bottle", "Misc", 4.99, 17, 25);
+INSERT INTO pets VALUES (18, "Heat Lamp", "Small Animals", 24.99, 10, 65);
+INSERT INTO pets VALUES (19, "Heat Bulb", "Small Animals", 12.99, 12, 70);
+INSERT INTO pets VALUES (20, "ID Tag", "Misc", 15.99, 50, 81);
+
+
+    --Display the database ordered by price
+SELECT * FROM pets 
+ORDER BY price desc;
+
+    --What is the total inventory of dog-specific items?
+SELECT SUM(quantity) "Total Inventory of Dog-Specific Items"
+FROM pets 
+where department="Dogs";
+
+    --What are the 5 most popular items?
+SELECT item, price, popularity
+FROM pets
+ORDER BY popularity desc
+limit 5;
