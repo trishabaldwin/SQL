@@ -1,0 +1,64 @@
+CREATE TABLE famous_people (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fullname TEXT,
+    profession TEXT);
+    
+INSERT INTO famous_people (fullname, profession) VALUES ("Ashton Kutcher", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Sting", "Musician");
+INSERT INTO famous_people (fullname, profession) VALUES ("Anna Paquin", "14");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Stephen King", "Author");
+INSERT INTO famous_people (fullname, profession) VALUES ("Mila Kunis", "Actor");
+INSERT INTO famous_people (fullname, profession) VALUES ("Stephen Moyer", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Trudie Styler", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Tabitha King", "Author");
+
+CREATE table famous_works
+   (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person_id INTEGER,
+    work TEXT, 
+    medium TEXT);
+
+    
+INSERT INTO famous_works (person_id, work, medium) VALUES (1, "That 70's Show", "TV Show");
+INSERT INTO famous_works (person_id, work, medium) VALUES (2, "the Police", "Band");
+INSERT INTO famous_works (person_id, work, medium) VALUES (3, "True Blood", "TV Show");
+INSERT INTO famous_works (person_id, work, medium) VALUES (4, "The Shining", "Book");
+INSERT INTO famous_works (person_id, work, medium) VALUES (5, "Black Swan", "Movie");
+INSERT INTO famous_works (person_id, work, medium) VALUES (7, "Filth", "Movie");
+INSERT INTO famous_works (person_id, work, medium) VALUES (8, "One on One", "Book");
+
+
+
+CREATE table marriages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    person1_id INTEGER,
+    person2_id INTEGER);
+
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (1, 5);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (2, 7);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (3, 6);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (4, 8);
+
+/*What work is each person famous for?*/
+
+SELECT fullname, work, medium
+FROM famous_people
+JOIN famous_works
+ON person_id = famous_people.id;
+
+/*Which famous people are married to one another?*/
+
+SELECT a.fullname, b.fullname
+FROM marriages
+JOIN famous_people a
+ON a.id = marriages.person1_id
+JOIN famous_people b
+ON b.id = marriages.person2_id;
