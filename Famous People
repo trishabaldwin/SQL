@@ -15,6 +15,23 @@ INSERT INTO famous_people (fullname, profession)
 VALUES ("Trudie Styler", "Actor");
 INSERT INTO famous_people (fullname, profession)
 VALUES ("Tabitha King", "Author");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Ann Rice", "Author");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Nicole Kidman", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Chrissy Teigan", "Model");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Blake Lively", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Stan Rice", "Author");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("John Legend", "Musician");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Ryan Reynolds", "Actor");
+INSERT INTO famous_people (fullname, profession)
+VALUES ("Keith Urban", "Musician");
+
 
 CREATE table famous_works
    (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,8 +47,14 @@ INSERT INTO famous_works (person_id, work, medium) VALUES (4, "The Shining", "Bo
 INSERT INTO famous_works (person_id, work, medium) VALUES (5, "Black Swan", "Movie");
 INSERT INTO famous_works (person_id, work, medium) VALUES (7, "Filth", "Movie");
 INSERT INTO famous_works (person_id, work, medium) VALUES (8, "One on One", "Book");
-
-
+INSERT INTO famous_works (person_id, work, medium) VALUES (9, "Interview With the Vampire", "Book");
+INSERT INTO famous_works (person_id, work, medium) VALUES (10, "Eyes Wide Shut", "Movie");
+INSERT INTO famous_works (person_id, work, medium) VALUES (11, "Sports Illustrated", "Photographs");
+INSERT INTO famous_works (person_id, work, medium) VALUES (12, "The Shallows", "Movie");
+INSERT INTO famous_works (person_id, work, medium) VALUES (13, "Whiteboy", "Poetry");
+INSERT INTO famous_works (person_id, work, medium) VALUES (14, "Glory", "Song");
+INSERT INTO famous_works (person_id, work, medium) VALUES (15, "Deadpool", "Movie");
+INSERT INTO famous_works (person_id, work, medium) VALUES (16, "Somebody Like You", "Song");
 
 CREATE table marriages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,6 +69,14 @@ INSERT INTO marriages (person1_id, person2_id)
 VALUES (3, 6);
 INSERT INTO marriages (person1_id, person2_id)
 VALUES (4, 8);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (9, 13);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (10, 16);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (11, 14);
+INSERT INTO marriages (person1_id, person2_id)
+VALUES (12, 15);
 
 /*What work is each person famous for?*/
 
