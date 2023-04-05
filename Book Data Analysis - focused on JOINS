@@ -1,0 +1,67 @@
+For this project, I performed analytics on the provided data using SQL, focusing on JOINS. The provided tables are author, book, adaptation, and book_review.
+
+--1. Select the title of each book and the name of its author.
+SELECT title, name
+FROM book
+JOIN author
+ON book.author_id = author.id;
+
+--2. Show the name of each author together with the title of the book they wrote and the year in which that book was published. Show only books published after 2005.
+SELECT title, name, publish_year
+FROM book
+JOIN author
+ON book.author_id = author.id
+WHERE book.publish_year > 2005;
+
+--3. For each book, show its title, adaptation title, adaptation year, and publication year. Consider only books with a rating lower than the rating of their corresponding adaptation. Additionally, show only those books for which an adaptation was released at most four years after the book was published.
+SELECT 
+   book.title AS Book_Title, 
+   adaptation.title AS Adaptation_Title, 
+   book.publish_year,
+   adaptation.release_year
+FROM book
+JOIN adaptation
+ON book.id = adaptation.book_id
+WHERE adaptation.release_year - book.publish_year <= 4
+	AND book.rating < adaptation.rating;
+
+--4. Show the title of each book together with its rating. Consider only those books that were published by authors who are still alive.
+SELECT book.title, book.rating
+FROM book
+JOIN author
+ON book.author_id = author.id
+WHERE author.death_year IS NULL;
+
+--5.  Show the title of each book together with the name of its adaptation and the date of the release. Show all books, regardless of whether they had adaptations.
+SELECT book.title, 
+	adaptation.title,
+  release_year
+FROM book
+LEFT JOIN adaptation
+ON book.id = adaptation.book_id;
+
+--6. Show the title of the book, the corresponding review, and the name of the review's author. Consider all books, even those that weren't reviewed.
+SELECT book.title, review, author
+FROM book_review
+RIGHT JOIN book
+ON book_review.book_id = book.id;
+
+--7. Display the title of each book along with the name of its author. Show all books, even those without an author. Show all authors, even those who haven't published a book yet.
+SELECT title, name
+FROM book
+FULL JOIN author
+ON book.author_id = author.id;
+
+--8. Generate all possible pairs of book titles and author names. Consider only books whose author's name is Ray Henry.
+SELECT title, name
+FROM book
+CROSS JOIN author
+WHERE author.name = 'Ray Henry';
+
+--9.  Show all books with their movie adaptations. Select each book's title, the name of its publishing house, the title of its adaptation, and the type of the adaptation. Keep the rows with no adaptation in the result.
+SELECT book.title, publishing_house, adaptation.title, adaptation.type
+FROM book
+LEFT JOIN adaptation
+ON book.id = adaptation.book_id
+WHERE type = 'movie'
+OR type IS NULL;
