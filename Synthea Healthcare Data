@@ -1,0 +1,48 @@
+--In this SQL, I utilized Synthea data downloaded and prepared by Data Wizardry. I created the tables in PostgreSQL, entered the data, and then queried utilizing the following prompts.
+
+--Identify all outpatient procedures.
+SELECT *
+FROM public.encounters
+WHERE encounterclass IN ('outpatient', 'ambulatory')
+
+--Write a query which returns the most common conditions for which patients are seen.
+--Must have at least 5000 patients seen for each condition.
+--Do not include unemployment.
+SELECT description,
+	COUNT(*) AS count_of_condition
+FROM public.conditions
+WHERE description != 'Unemployment'
+GROUP BY description
+HAVING COUNT(*) > 5000
+ORDER BY count_of_condition DESC
+
+--Write a query that returns all the patients from Boston.
+Select *
+FROM public.patients
+WHERE city = 'Boston'
+
+--Return all patients who have been diagnosed with Chronic Kidney Disease (use ICD-9 codes).
+SELECT *
+FROM public.conditions
+WHERE code IN ('585.1', '585.2', '585.3', '585.4')
+
+--Write a query that does the following:
+--1. Lists out number of patients per city in descending order
+--2. Does not include Boston
+--3. must have at least 100 patients from that city
+SELECT city,
+	count(*) 
+FROM public.patients
+WHERE city != 'Boston'
+GROUP BY city
+HAVING count(*) >= 100
+ORDER BY count(*) DESC
+
+--Identify all patients and the immunizations they have received.
+SELECT t1.*,
+	t2.first,
+	t2.last,
+	t2.birthdate
+FROM public.immunizations AS t1
+LEFT JOIN public.patients AS t2
+ON t1.patient = t2.id
