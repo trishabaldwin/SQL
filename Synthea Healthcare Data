@@ -1,4 +1,4 @@
---In this SQL, I utilized Synthea data downloaded and prepared by Data Wizardry. I created the tables in PostgreSQL, entered the data, and then queried utilizing the following prompts.
+--In this SQL, I utilized Synthea data courtesy of Data Wizardry. I created the tables in PostgreSQL, entered the data, and then queried utilizing the following prompts.
 
 --Identify all outpatient procedures.
 SELECT *
