@@ -1,0 +1,51 @@
+I worked with 2 Excel files titled Hospital Beds and HCAHPS 2022 data to determine if hospitals in the US have made any improvements to their quality of care from 2020-2022. 
+First, I created a schema and tables in PostgreSQL, then imported the files as csv. 
+Next, I wrote the following code to clean the data and join the 2 tables. I included detailed notes with my code in order to explain my reasoning and make the code easier to follow. I did include a copy of the code without notes at the bottom as well.
+Finally, I input this data into Tableau to create a data story.
+
+  SELECT LPAD(CAST(provider_ccn AS text),6,'0') AS provider_ccn
+	  ,hospital_name
+--To_date converts the date from MM/DD/YYYY to the more easily recognizable YYYY-MM-DD.
+	  ,to_date(fiscal_year_begin_date, 'MM/DD/YYYY') AS fiscal_year_begin_date
+	  ,to_date(fiscal_year_end_date, 'MM/DD/YYYY') AS fiscal_year_end_date
+	  ,number_of_beds
+--Some hospitals are listed twice since they reported data more than once in the 2020-2022 time frame. This line works as follows:
+--Partition by will create a separate row number for each unique provider_ccn.
+--Row_Number will assign an integer for each unique provider_ccn, starting at 1.
+--I ordered by to_date(fiscal_year_end_date, 'MM/DD/YYYY') DESC) so that the most recent provider_ccn will display as 1, and the 2nd set of data as 2.
+--I labeled this as nth_row so I could filter out all of the earlier data for each duplicate provider_ccn.
+	  ,ROW_NUMBER() OVER (PARTITION BY provider_ccn ORDER BY to_date(fiscal_year_end_date, 'MM/DD/YYYY') DESC) AS nth_row
+    FROM "postgres"."Hospital_Data".hospital_beds
+  )
+--I use the LPAD function again on the facility_id as this is the same as the provider_ccn and needs to be 6 digits.
+  SELECT LPAD(CAST(facility_id AS text),6,'0') AS provider_ccn
+--I used the to_date function to convert the dates to match the format in each table.
+	  ,to_date(start_date, 'MM/DD/YYYY') AS start_date_converted
+	  ,to_date(end_date, 'MM/DD/YYYY') AS end_date_converted
+	  ,*
+  FROM "postgres"."Hospital_Data".hcahps_data AS hcahps
+--I used a left join in order to keep all information from the hcahps table and add the matching information from the beds table.
+  LEFT JOIN hospital_beds_prep as beds
+--I had to use LPAD(CAST(facility_id AS text),6,'0') as a column name rather than hcahps.provider_ccn because SQL will compute the JOIN command before computing the first select statement which identifies the column as provider_ccn. 
+    ON LPAD(CAST(facility_id AS text),6,'0') = beds.provider_ccn
+--Here I specify that I only want the most recent data from each provider_ccn by filtering out each provider_ccn from the beds table with row_number of 2.
+    AND beds.nth_row = 1
+
+WITH hospital_beds_prep AS
+(
+SELECT LPAD(CAST(provider_ccn AS text),6,'0') AS provider_ccn
+	,hospital_name
+	,to_date(fiscal_year_begin_date, 'MM/DD/YYYY') AS fiscal_year_begin_date
+	,to_date(fiscal_year_end_date, 'MM/DD/YYYY') AS fiscal_year_end_date
+	,number_of_beds
+	,ROW_NUMBER() OVER (PARTITION BY provider_ccn ORDER BY to_date(fiscal_year_end_date, 'MM/DD/YYYY') DESC) AS nth_row
+FROM "postgres"."Hospital_Data".hospital_beds
+)
+SELECT LPAD(CAST(facility_id AS text),6,'0') AS provider_ccn
+	,to_date(start_date, 'MM/DD/YYYY') AS start_date_converted
+	,to_date(end_date, 'MM/DD/YYYY') AS end_date_converted
+	,*
+FROM "postgres"."Hospital_Data".hcahps_data AS hcahps
+LEFT JOIN hospital_beds_prep as beds
+  ON LPAD(CAST(facility_id AS text),6,'0') = beds.provider_ccn
+  AND beds.nth_row = 1
